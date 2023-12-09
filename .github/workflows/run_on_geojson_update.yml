@@ -3,7 +3,7 @@ name: Run fude_stats.py on GeoJSON Update
 on:
   push:
     paths:
-      - 'GeoJSON/*.geojson'
+      - 'fudedata/*.geojson'
 
 jobs:
   run-script:

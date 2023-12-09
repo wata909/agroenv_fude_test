@@ -7,7 +7,7 @@ from shapely import wkt
 
 
 # 設定値
-GEOJSON_DIR = "GeoJSON"  # GeoJSONファイルが保存されているディレクトリ
+GEOJSON_DIR = "fudedata"  # GeoJSONファイルが保存されているディレクトリ
 INPUT_MESH_DIR = "meshdata"  # 入力メッシュデータのディレクトリ
 OUTPUT_DIR = "fudedata"  # 出力ディレクトリ
 LOG_FILE = "process_log.txt"  # ログファイル
