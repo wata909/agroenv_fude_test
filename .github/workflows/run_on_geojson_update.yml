@@ -32,4 +32,9 @@ jobs:
           pip install Shapely==1.8.1.post1
       - name: Run fude_stats.py
         run: python fude_stats.py
+      - name: Upload output
+        uses: actions/upload-artifact@v2
+        with:
+          name: processed-data
+          path: fudedata/
 
