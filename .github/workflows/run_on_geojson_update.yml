@@ -37,4 +37,11 @@ jobs:
         with:
           name: processed-data
           path: fudedata/
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'wata909'
+          git config --global user.email 'wata909@gmail.com'
+          git add fudedata/
+          git commit -m 'Add processed data'
+          git push
 
