@@ -1,13 +1,13 @@
-name: Run fude_stats.py on GeoJSON Update
-
-# on:
-#  push:
-#    paths:
-#      - 'fudedata/*.geojson'
+name: Run fude_stats.py on fudedata Update
 
 on:
-        # 手動実行
-  workflow_dispatch:
+ push:
+   paths:
+     - 'fudedata/*.geojson'
+
+#on:
+#        # 手動実行
+#  workflow_dispatch:
 
 jobs:
   run-script:
