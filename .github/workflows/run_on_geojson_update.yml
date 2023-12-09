@@ -15,17 +15,21 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
+      - name: Install GDAL binaries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgdal-dev gdal-bin
+      - name: Set environment variables
+        run: |
+          echo "GDAL_VERSION=$(gdal-config --version)" >> $GITHUB_ENV
+          echo "GDAL_DATA=$(gdal-config --datadir)" >> $GITHUB_ENV
+      - name: Install GDAL Python binding
+        run: |
+          pip install GDAL==$(gdal-config --version)
       - name: Install Dependencies
         run: |
           pip install geopandas==0.13.2
           pip install Shapely==1.8.1.post1
-      - name: Install GDAL dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgdal-dev
-      - name: Install GDAL Python binding
-        run: |
-          pip install GDAL==3.6.2
       - name: Run fude_stats.py
         run: python fude_stats.py
 
