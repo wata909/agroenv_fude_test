@@ -53,24 +53,6 @@ def generate_fude_png(src: str, dst: str, geometry_wkt: str, resampling="nearest
 
     return dst
 
-# github actionでやるので，ここは使わない
-"""
-def increase_resolution(src: str, dst: str, scale_factor=10, resampling="nearest") -> str:
-    # ラスターデータの解像度を高解像度に変更する
-    # 元のラスターの解像度を取得
-    src_ds = gdal.Open(src)
-    transform = src_ds.GetGeoTransform()
-    original_res = (transform[1], transform[5])  # (pixel width, pixel height)
-
-    # 新しい解像度を計算
-    new_res = (original_res[0] / scale_factor, original_res[1] / scale_factor)
-
-    # gdal.Warpを使用して解像度を変更
-    warp_options = gdal.WarpOptions(xRes=new_res[0], yRes=new_res[1], resampleAlg=resampling)
-    gdal.Warp(dst, src, options=warp_options)
-
-    return dst
-"""
 def process_feature(mesh_dir, feature, feature_id, high_res_dem, high_res_slope, high_res_direction, high_res_geology):
     """
     各フィーチャーに対する処理
