@@ -1,6 +1,6 @@
 import os
 import tempfile
-# import subprocess
+import tarfile  # tarfileモジュールをインポート
 import geopandas as gpd
 from osgeo import gdal, ogr, osr
 from shapely import wkt
