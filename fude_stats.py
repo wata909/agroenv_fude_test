@@ -1,6 +1,6 @@
 import os
 import tempfile
-import subprocess
+# import subprocess
 import geopandas as gpd
 from osgeo import gdal, ogr, osr
 from shapely import wkt
@@ -69,6 +69,15 @@ def process_feature(mesh_dir, feature, feature_id, high_res_dem, high_res_slope,
     generate_fude_png(high_res_direction, os.path.join(output_feature_dir, "direction.png"), geometry_wkt)
     generate_fude_png(high_res_geology, os.path.join(output_feature_dir, "geology.png"), geometry_wkt)
 
+def tar_mesh_data(mesh_dir):
+    """
+    指定されたメッシュディレクトリの内容をtarで圧縮する
+    """
+    output_tar_path = os.path.join(OUTPUT_DIR, f"{mesh_dir}.tar.gz")
+    with tarfile.open(output_tar_path, "w:gz") as tar:
+        tar.add(os.path.join(OUTPUT_DIR, mesh_dir), arcname=mesh_dir)
+    # 圧縮後のディレクトリを削除
+    os.system(f'rm -rf {os.path.join(OUTPUT_DIR, mesh_dir)}')
 
 def main():
     # ログファイルの初期化
@@ -97,42 +106,7 @@ def main():
                 # ログに記録
                 with open(LOG_FILE, 'a') as log_file:
                     log_file.write(f"GeoJSON file not found for mesh {mesh_dir}\n")
-
-"""
-高解像度用の処理。ここではコメントアウト
-def main():
-    # ログファイルの初期化
-    with open(LOG_FILE, 'w') as log_file:
-        log_file.write("Processing Log\n")
-
-    # 各メッシュフォルダに対する処理
-    for mesh_dir in os.listdir(INPUT_MESH_DIR):
-        mesh_path = os.path.join(INPUT_MESH_DIR, mesh_dir)
-        if os.path.isdir(mesh_path):
-            # 各ラスターデータの解像度を高解像度に変更
-            high_res_dem = increase_resolution(os.path.join(INPUT_MESH_DIR, mesh_dir, "dem.png"), 
-                                               os.path.join(mesh_path, "high_res_dem.png"))
-            high_res_slope = increase_resolution(os.path.join(INPUT_MESH_DIR, mesh_dir, "slope.png"), 
-                                                 os.path.join(mesh_path, "high_res_slope.png"))
-            high_res_direction = increase_resolution(os.path.join(INPUT_MESH_DIR, mesh_dir, "direction.png"), 
-                                                     os.path.join(mesh_path, "high_res_direction.png"))
-            high_res_geology = increase_resolution(os.path.join(INPUT_MESH_DIR, mesh_dir, "geology.png"), 
-                                                   os.path.join(mesh_path, "high_res_geology.png"))
-
-            # jsonファイルの読み込み
-            geojson_file = os.path.join(GEOJSON_DIR, f"{mesh_dir}.geojson")
-            if os.path.exists(geojson_file):
-                # GeoJSONファイルの読み込み
-                gdf = gpd.read_file(geojson_file)
-                # 各地物に対する処理
-                for index, feature in gdf.iterrows():
-#                    process_feature(mesh_dir, feature, feature['polygon_uuid'], high_res_dem, high_res_slope, high_res_direction, high_res_geology)
-                    process_feature(mesh_dir, feature, feature['polygon_uuid'], dem, slope, direction, geology)
-            else:
-                # ログに記録
-                with open(LOG_FILE, 'a') as log_file:
-                    log_file.write(f"GeoJSON file not found for mesh {mesh_dir}\n")
-"""
+    tar_mesh_data(mesh_dir)
 
 if __name__ == "__main__":
     main()
